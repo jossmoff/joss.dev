@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const experience = [
+  {
+    date: 'Aug 2025 — Now',
+    title: 'SDE III',
+    company: 'Capital One · Nottingham, UK',
+    body: 'Designing centralised capabilities for federated batch data pipelines and modernising central event brokers that customers love.',
+  },
+  {
+    date: 'Jul 2024 — Aug 2025',
+    title: 'SDE II',
+    company: 'Capital One · Nottingham, UK',
+    body: 'Designing resilient serverless workflows and event-driven architectures on AWS, and building out a machine learning platform.',
+  },
+  {
+    date: 'Sep 2022 — Jul 2024',
+    title: 'SDE I',
+    company: 'Capital One · Nottingham, UK',
+    body: 'Built and maintained cloud-native services on AWS with a focus on software security and performance testing.',
+  },
+  {
+    date: '2020 — 2022',
+    title: 'SDE Intern',
+    company: 'Capital One · Nottingham, UK',
+    body: 'Two placements contributing to large-scale cloud infrastructure and learning modern software engineering practices across AWS and the JVM ecosystem.',
+  },
+];
+
+const openSource = [
+  {
+    date: '2024 — Now',
+    title: 'json-schema-compiler',
+    company: 'Personal Project',
+    body: 'High-throughput JSON Schema validator via Janino code generation; satisfiability checking; full JMH harness across 7 modules.',
+  },
+  {
+    date: '2024',
+    title: 'cucumber-dagger',
+    company: 'Published · Maven Central',
+    body: 'Dagger 2-backed DI plugin for Cucumber-JVM. Reflection-free, GraalVM-compatible architecture.',
+  },
+];
+
+const certifications = [
+  { name: 'AWS Solutions Architect Associate', abbr: 'SAA-C03' },
+  { name: 'AWS Solutions Architect Professional', abbr: 'SAP-C02' },
+  { name: 'AWS Developer Associate', abbr: 'DVA-C02' },
+];
+---
+
+<BaseLayout title="Resume" description="Senior software engineer — JVM, AWS, developer tooling.">
+  <PageHeader eyebrow="Experience" title="Resume" tagline="A record of where I've been and what I've built." />
+
+  <div class="resume-wrap fade-up-delay">
+    <div class="resume-grid">
+
+      <!-- Sidebar -->
+      <aside>
+        <div class="mb-10">
+          <div class="sec-label">Contact</div>
+          <ul class="list-none flex flex-col gap-2">
+            <li class="text-[0.82rem] text-[var(--fg-muted)]"><a href="https://github.com/jossmoff" target="_blank" rel="noopener" class="sidebar-link">github.com/jossmoff</a></li>
+            <li class="text-[0.82rem] text-[var(--fg-muted)]"><a href="https://www.linkedin.com/in/joss-moffatt/" target="_blank" rel="noopener" class="sidebar-link">linkedin.com/in/joss-moffatt</a></li>
+            <li class="text-[0.82rem] text-[var(--fg-muted)]"><a href="mailto:hi@joss.dev" class="sidebar-link">hi@joss.dev</a></li>
+            <li class="text-[0.82rem] text-[var(--fg-muted)]">Nottingham, UK</li>
+          </ul>
+        </div>
+
+        <div class="mb-10">
+          <div class="sec-label">Certifications</div>
+          <ul class="list-none flex flex-col gap-3">
+            {certifications.map((c) => (
+              <li class="flex flex-col gap-[0.15rem]">
+                <span class="font-[var(--font-head)] font-semibold text-[0.8rem] text-[var(--fg-muted)] leading-[1.3]">{c.name}</span>
+                <span class="font-[var(--font-head)] font-bold text-[0.62rem] tracking-[0.1em] uppercase text-[var(--accent-dk)]">{c.abbr}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="mb-10">
+          <div class="sec-label">Education</div>
+          <div class="text-[0.82rem] text-[var(--fg-muted)] leading-[1.75]">
+            MEng Computer Science<br />
+            <span class="text-[var(--accent-dk)] font-semibold">University of Manchester</span><br />
+            1st Class Honours
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main>
+        <section class="mb-12">
+          <div class="sec-label">Experience</div>
+          {experience.map((e) => (
+            <div class="res-entry">
+              <span class="res-date">{e.date}</span>
+              <div class="res-body">
+                <h2 class="res-title">{e.title}</h2>
+                <div class="font-[var(--font-head)] font-semibold text-[0.72rem] tracking-[0.04em] uppercase text-[var(--accent-dk)] mb-[0.4rem]">{e.company}</div>
+                <p class="text-[0.85rem] text-[var(--fg-muted)] leading-[1.75]">{e.body}</p>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <section class="mb-12">
+          <div class="sec-label">Open Source</div>
+          {openSource.map((e) => (
+            <div class="res-entry">
+              <span class="res-date">{e.date}</span>
+              <div class="res-body">
+                <h2 class="res-title">{e.title}</h2>
+                <div class="font-[var(--font-head)] font-semibold text-[0.72rem] tracking-[0.04em] uppercase text-[var(--accent-dk)] mb-[0.4rem]">{e.company}</div>
+                <p class="text-[0.85rem] text-[var(--fg-muted)] leading-[1.75]">{e.body}</p>
+              </div>
+            </div>
+          ))}
+        </section>
+      </main>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .resume-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 6rem;
+  }
+
+  .resume-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0 4rem;
+  }
+
+  .sec-label {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .sidebar-link {
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color var(--ease);
+  }
+  .sidebar-link:hover { color: var(--accent); }
+
+  .res-entry {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 0 1.5rem;
+    padding: 1.25rem 0.75rem;
+    border-radius: var(--radius);
+    border-bottom: 1px solid var(--border);
+    margin: 0 -0.75rem;
+    transition: background var(--ease);
+  }
+  .res-entry:last-child { border-bottom: none; }
+  .res-entry:hover { background: var(--bg-hover); }
+  .res-entry:hover .res-title { color: var(--accent); }
+
+  .res-date {
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    padding-top: 0.25rem;
+    white-space: nowrap;
+  }
+
+  .res-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    margin-bottom: 0.15rem;
+    transition: color var(--ease);
+  }
+
+  @media (max-width: 768px) {
+    .resume-wrap { padding: 2.5rem 1.25rem 4rem; }
+    .resume-grid { grid-template-columns: 1fr; }
+    .res-entry { grid-template-columns: 1fr; gap: 0.25rem; }
+    .res-date { padding-top: 0; }
+  }
+</style>

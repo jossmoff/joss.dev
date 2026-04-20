@@ -1,0 +1,119 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Software engineer building JVM libraries and AWS infrastructure.' } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title} — joss.dev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body>
+    <nav class="nav">
+      <a href="/" class="nav-logo"><span class="logo-name">joss</span>.</a>
+      <ul class="flex list-none gap-1">
+        <li>
+          <a href="/blog" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]}>blog</a>
+        </li>
+        <li>
+          <a href="/projects" class:list={['nav-link', { active: currentPath.startsWith('/projects') }]}>projects</a>
+        </li>
+        <li>
+          <a href="/resume" class:list={['nav-link', { active: currentPath === '/resume' }]}>resume</a>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="main">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    height: 56px;
+    background: var(--bg-subtle);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+  }
+
+  .nav-logo {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--fg-muted);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .logo-name { color: var(--accent); }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 0.9rem;
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color var(--ease);
+  }
+
+  .nav-link:hover,
+  .nav-link.active { color: var(--accent); }
+
+  .main {
+    padding-top: 56px;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(17, 17, 17, 0.75);
+    mask-image:
+      linear-gradient(to right,  transparent, black 8px, black calc(100% - 8px), transparent),
+      linear-gradient(to bottom, transparent, black 8px, black calc(100% - 8px), transparent);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(to right,  transparent, black 8px, black calc(100% - 8px), transparent),
+      linear-gradient(to bottom, transparent, black 8px, black calc(100% - 8px), transparent);
+    -webkit-mask-composite: source-in;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @media (max-width: 600px) {
+    .nav { padding: 0 1.25rem; }
+    .nav-link { padding: 0 0.6rem; font-size: 0.8rem; }
+  }
+</style>

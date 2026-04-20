@@ -1,0 +1,7 @@
+{
+  "app": "bun run bin/infra.ts",
+  "watch": {
+    "include": ["**"],
+    "exclude": ["README.md", "cdk*.json", "**/*.js", "**/*.d.ts", "node_modules", "cdk.out"]
+  }
+}

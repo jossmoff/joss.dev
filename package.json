@@ -1,0 +1,26 @@
+{
+  "name": "joss-dev",
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "bun",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "new-post": "bun scripts/new-post.ts",
+    "infra:install": "cd infrastructure && bun install",
+    "infra:deploy": "cd infrastructure && bun x cdk deploy --all",
+    "infra:diff": "cd infrastructure && bun x cdk diff",
+    "infra:synth": "cd infrastructure && bun x cdk synth"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^4.15.0",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "typescript": "^5.5.0"
+  }
+}

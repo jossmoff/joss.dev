@@ -1,0 +1,62 @@
+---
+interface Props {
+  eyebrow: string;
+  title:   string;
+  tagline: string;
+}
+
+const { eyebrow, title, tagline } = Astro.props;
+---
+
+<header class="page-header fade-up">
+  <div class="page-header-inner">
+    <span class="eyebrow">{eyebrow}</span>
+    <h1>{title}</h1>
+    <p class="tagline">{tagline}</p>
+  </div>
+</header>
+
+<style>
+  .page-header {
+    border-bottom: 1px solid var(--border);
+    padding: 3.5rem 2rem 2.5rem;
+  }
+
+  .page-header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding-left: 1.1rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  .eyebrow {
+    display: block;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+  }
+
+  .tagline {
+    font-size: 0.9rem;
+    color: var(--fg-muted);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 768px) {
+    .page-header { padding: 2.5rem 1.25rem 2rem; }
+  }
+</style>

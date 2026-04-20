@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+
+const projects = [
+  {
+    num: '01',
+    status: 'Published',
+    name: 'cucumber-dagger',
+    description:
+      'Cucumber-JVM DI plugin backed by Dagger 2. Subcomponent-per-scenario pattern with annotation processor, MethodHandle maps and ThreadLocal isolation for parallel test execution.',
+    lang: 'Java · Dagger 2 · Cucumber',
+    link: 'https://central.sonatype.com/artifact/joss.dev/cucumber-dagger',
+    linkLabel: 'Maven Central',
+  },
+];
+---
+
+<BaseLayout title="Projects" description="Open-source libraries and tooling — mostly JVM.">
+  <PageHeader eyebrow="Open Source" title="Projects" tagline="Things I have developed that I am proud of." />
+
+  <div class="projects-wrap fade-up-delay">
+    <div class="proj-grid">
+      {projects.map((p) => (
+        <a href={p.link} target="_blank" rel="noopener noreferrer" class="proj-card">
+          <span class="proj-meta">{p.num} — {p.status}</span>
+          <div class="proj-name">{p.name}</div>
+          <p class="proj-desc">{p.description}</p>
+          <div class="proj-footer">
+            <span class="proj-lang">{p.lang}</span>
+            <span class="proj-link">
+              {p.linkLabel} <span class="proj-arrow">→</span>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .projects-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 6rem;
+  }
+
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .proj-card {
+    background: var(--bg-subtle);
+    padding: 2rem 1.75rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border: 2px solid transparent;
+    transition: background var(--ease), border-color var(--ease);
+  }
+  .proj-card:hover { background: var(--bg-hover); border-color: rgba(232,197,71,0.25); }
+  .proj-card:hover .proj-name { color: var(--accent); }
+  .proj-card:hover .proj-footer { border-color: var(--border-lt); }
+  .proj-card:hover .proj-link { color: var(--accent); }
+  .proj-card:hover .proj-arrow { transform: translateX(var(--arrow-slide)); }
+
+  .proj-meta {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  .proj-name {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    line-height: 1.2;
+    transition: color var(--ease);
+  }
+
+  .proj-desc {
+    font-size: 0.83rem;
+    color: var(--fg-muted);
+    line-height: 1.75;
+    flex: 1;
+  }
+
+  .proj-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    transition: border-color var(--ease);
+  }
+
+  .proj-lang {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  .proj-link {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color var(--ease);
+  }
+
+  .proj-arrow {
+    display: inline-block;
+    transition: transform var(--ease);
+  }
+
+  @media (max-width: 600px) {
+    .projects-wrap { padding: 2.5rem 1.25rem 4rem; }
+    .proj-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,194 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => {
+    const slug = post.id.replace('/index.md', '').replace('.md', '');
+    return { params: { slug }, props: { post } };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <div class="post-header fade-up">
+    <div class="post-meta">
+      <a href="/blog" class="back-link">← blog</a>
+      <time>{fmt(post.data.date)}</time>
+    </div>
+    <h1>{post.data.title}</h1>
+    {post.data.description && (
+      <p class="post-tagline">{post.data.description}</p>
+    )}
+    <div class="post-tag-list">
+      {post.data.tags.map((t) => <span class="tag">{t}</span>)}
+    </div>
+  </div>
+
+  <article class="prose fade-up-delay">
+    <Content />
+  </article>
+</BaseLayout>
+
+<style>
+  .post-header {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-head);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--fg-faint);
+  }
+
+  .back-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--ease);
+  }
+  .back-link:hover { color: var(--accent-lt); }
+
+  .post-header h1 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+
+  .post-tagline {
+    font-size: 1.05rem;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .post-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tag {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-dk);
+    background: rgba(232, 197, 71, 0.08);
+    border: 1px solid rgba(232, 197, 71, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .prose {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 6rem;
+    color: var(--fg-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin: 2.5rem 0 0.75rem;
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--fg);
+    margin: 2rem 0 0.5rem;
+  }
+
+  .prose :global(p) { margin-bottom: 1.25rem; }
+
+  .prose :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(strong) { color: var(--fg); font-weight: 600; }
+
+  .prose :global(code) {
+    font-family: 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.88em;
+    background: var(--bg-muted);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    color: var(--accent-lt);
+  }
+
+  .prose :global(pre) {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+    font-size: 0.88rem;
+    color: var(--fg);
+  }
+
+  .prose :global(ul), .prose :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .prose :global(li) { margin-bottom: 0.4rem; }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    color: var(--fg-faint);
+    font-style: italic;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 600px) {
+    .post-header, .prose { padding-left: 1.25rem; padding-right: 1.25rem; }
+  }
+</style>
