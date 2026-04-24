@@ -165,7 +165,6 @@ classDiagram
 The scope system enforces the lifetime boundary. `@Singleton` bindings live on the
 parent; `@ScenarioScope` bindings live on the subcomponent.
 
-> [!NOTE]
 > Everything you can do with `@ScenarioScope` — including passing state between step
 > definition classes — is covered in the
 > [scenario scope docs](https://github.com/jossmoff/dagger-cucumber/tree/main/docs/scenario-scope.md).
@@ -296,7 +295,6 @@ No `ObjectFactory`. No provision methods. No component construction in step defs
 The `Basket` is recreated for every scenario; the `HttpClient` is not. Run
 `./gradlew test` and Dagger handles the rest.
 
-> [!NOTE]
 > Ready to set this up in your own project? The
 > [getting started guide](https://github.com/jossmoff/dagger-cucumber/tree/main/docs/getting-started.md)
 > covers dependencies, configuration, and the full feature set.
