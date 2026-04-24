@@ -73,19 +73,18 @@ In my opinion for a DI framework to be truly first-class here, it needs two thin
 
 The obvious way to wire step definitions into a Dagger component at runtime would be
 classpath scanning: find all classes annotated with Cucumber's step annotations, look
-them up in the component, return them. Job done.
+them up in the component and return them. Bob's your uncle!
 
 The problem is that this is exactly the kind of runtime reflection that Dagger was
 designed to eliminate. Dagger's whole value proposition is that your dependency graph is
 validated and resolved at compile time. Bolting a reflective classpath scanner onto the front of it would
 undermine that entirely.
 
-The natural answer is to do the same thing Dagger does: use an annotation processor.
+The natural answer I came up with was to do the same thing Dagger does and leverage an annotation processor.
 At compile time, the processor can inspect your component, discover your step definition
 classes, and generate a resolver that dispatches `getInstance` calls via a plain
 `if (type == X.class)` chain. By the time your tests run, there is no scanning, no
-reflection, and no surprises - just generated code, consistent with how Dagger itself
-works.
+reflectio just generated code. 
 
 This is why `cucumber-dagger` ships as both a runtime library *and* an annotation
 processor. The processor does the structural work at build time so the runtime doesn't
@@ -121,7 +120,7 @@ The naive approaches are all bad:
 - **One big mutable holder.** See above, with extra steps.
 
 What we actually need is a way to say: *this part of the graph is per-run, and this part
-is per-scenario*, with a clear boundary between them. Dagger has exactly that - it's
+is per-scenario*, with a clear boundary between them. After doing some digging I found Dagger has exactly that - it's
 called a **subcomponent**.
 
 A `@Subcomponent` is a child component that:
@@ -135,35 +134,7 @@ The parent component maps onto the test run. The subcomponent maps onto a single
 scenario. You create it at the start of each scenario and drop the reference at the end.
 The parent, and all its singletons, lives on unaffected.
 
-```mermaid
-classDiagram
-    class CucumberDaggerComponent {
-        <<interface>>
-        +scopedComponentBuilder()
-    }
-    class IntegrationTestConfig {
-        <<interface>>
-        @Component @Singleton
-        @CucumberDaggerConfiguration
-    }
-    class GeneratedCucumberWrapper {
-        <<interface>>
-        @Component @Singleton
-        generated
-    }
-    class GeneratedScopedComponent {
-        <<interface>>
-        @Subcomponent @ScenarioScope
-        generated
-    }
-
-    CucumberDaggerComponent <|.. IntegrationTestConfig
-    CucumberDaggerComponent <|.. GeneratedCucumberWrapper
-    GeneratedCucumberWrapper *-- GeneratedScopedComponent : creates
-```
-
-The scope system enforces the lifetime boundary. `@Singleton` bindings live on the
-parent; `@ScenarioScope` bindings live on the subcomponent.
+The scope system enforces the lifetime boundary. The dagger-cucumber library provides a custom `@ScenarioScope` scope to provide a binding that should be recreated between scenarios.
 
 > Everything you can do with `@ScenarioScope` — including passing state between step
 > definition classes — is covered in the
